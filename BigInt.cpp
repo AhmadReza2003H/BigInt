@@ -3,19 +3,23 @@
 #include <iomanip>
 #include <math.h>
 #include "BigInt.h"
-#define equal 0
-#define greater 1
-#define smaller -1
-#define add 1
-#define sub -1
+
+#define EQUAL 0
+#define GREATER 1
+#define SMALLER -1
+#define ADD 1
+#define SUB -1
+
 std::ostream & operator<<(std::ostream &os , const BigInt &bigInt){
     bool isPrinting = false;
     for(int i = 4 ; i >= 0 ; i--){
         if(!isPrinting && bigInt.number[i] != 0){
             isPrinting = true;
-            os << bigInt.number[i];
         } else if(isPrinting){
-        os << std::setfill('0') << std::setw(9) << bigInt.number[i];
+            os << std::setfill('0') << std::setw(9);
+        }
+        if(isPrinting){
+            os << bigInt.number[i];
         }
     }
     if(!isPrinting){
@@ -38,37 +42,37 @@ std::istream & operator>>(std::istream &is , BigInt &bigInt){
 }
 
 bool BigInt::operator==(const BigInt &bigInt) const {
-    return (this->compare(bigInt) == equal);
+    return (this->compare(bigInt) == EQUAL);
 }
 
 bool BigInt::operator!=(const BigInt &bigInt) const {
-    return (this->compare(bigInt) != equal);
+    return (this->compare(bigInt) != EQUAL);
 }
 
 bool BigInt::operator<(const BigInt &bigInt) const {
-    return (this->compare(bigInt) == smaller);
+    return (this->compare(bigInt) == SMALLER);
 }
 
 bool BigInt::operator<=(const BigInt &bigInt) const {
     int compare = this->compare(bigInt);
-    return (compare == equal || compare == smaller);
+    return (compare == EQUAL || compare == SMALLER);
 }
 
 bool BigInt::operator>(const BigInt &bigInt)const { 
-    return (this->compare(bigInt) == greater);
+    return (this->compare(bigInt) == GREATER);
 }
 
 bool BigInt::operator>=(const BigInt &bigInt) const {
     int compare = this->compare(bigInt);
-    return (compare == equal || compare == greater);
+    return (compare == EQUAL || compare == GREATER);
 }
 
 BigInt BigInt::operator+(const BigInt &bigInt) {
-    return this->plusMinusOps(bigInt , add);
+    return this->plusMinusOps(bigInt , ADD);
 }
 
 BigInt BigInt::operator-(const BigInt &bigInt) {
-    return this->plusMinusOps(bigInt , sub);
+    return this->plusMinusOps(bigInt , SUB);
 }
 
 BigInt BigInt::plusMinusOps(const BigInt &bigInt , int operation){
@@ -91,12 +95,12 @@ int BigInt::compare(const BigInt & bigInt) const {
         if(this->number[i] == bigInt.number[i]){
             continue;
         } else if (this->number[i] > bigInt.number[i]) {
-            return greater; 
+            return GREATER; 
         } else {
-            return smaller; 
+            return SMALLER; 
         }
     }
-    return equal;
+    return EQUAL;
 }
 
 BigInt::BigInt(){
